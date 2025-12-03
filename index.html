@@ -2,45 +2,47 @@
 <html>
 <head>
   <meta charset="UTF-8">
-  <title>Foto Automática</title>
+  <title>Documento Automático</title>
 </head>
 <body style="text-align:center; font-family:Arial;">
-  <h1>Foto Automática</h1>
-  <img id="foto" style="max-width:90%; border-radius:12px;">
+  <h1>Documento Automático</h1>
+
+  <iframe id="viewer" style="width:90vw; height:90vh; border:none;"></iframe>
 
   <script>
-    // Quantidade total de fotos
-    const totalFotos = 14;
+    // Quantidade total de documentos
+    const totalDocs = 14;
 
-    // Dias que avançam a foto: terça(2), quarta(3), quinta(4), sexta(5)
+    // Dias que avançam o documento: terça(2), quarta(3), quinta(4), sexta(5)
     const diasValidos = [2, 3, 4, 5];
 
-    // Data base (pode ser qualquer segunda-feira)
-    const dataBase = new Date(2025, 0, 6); // 6 Jan 2025 é uma segunda
+    // Data de referência (deve ser uma segunda-feira)
+    const dataBase = new Date(2025, 0, 6);
 
-    // Data de hoje
     const hoje = new Date();
-
-    // Calcula quantos dias foram passados desde a data base
-    const diasPassados = Math.floor((hoje - dataBase) / (1000 * 60 * 60 * 24));
+    const diasPassados = Math.floor((hoje - dataBase) / (1000*60*60*24));
 
     let trocas = 0;
 
+    // Conta quantas trocas (terças–sextas) já ocorreram
     for (let i = 0; i <= diasPassados; i++) {
       const d = new Date(dataBase);
       d.setDate(dataBase.getDate() + i);
 
-      const diaDaSemana = d.getDay(); // 0–6
-
-      if (diasValidos.includes(diaDaSemana)) {
+      if (diasValidos.includes(d.getDay())) {
         trocas++;
       }
     }
 
-    // Define a foto atual no ciclo
-    const fotoIndex = (trocas % totalFotos) + 1;
+    // Índice do documento atual
+    const docIndex = (trocas % totalDocs) + 1;
 
-    document.getElementById("foto").src = "fotos/foto" + fotoIndex + ".jpg";
+    // Caminho do arquivo .docx
+    const url = window.location.origin + "/docx/arquivo" + docIndex + ".docx";
+
+    // Exibir o DOCX via Google Docs Viewer
+    document.getElementById("viewer").src =
+      "https://docs.google.com/gview?embedded=true&url=" + url;
   </script>
 </body>
 </html>
